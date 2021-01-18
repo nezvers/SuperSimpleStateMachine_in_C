@@ -31,7 +31,7 @@ void st_idle_enter(void *data){
 	printf("Idle entered \n");
 }
 void st_run_enter(void *data){
-	int spd = ((SomeData*)data)->speed;
+	int spd = ((SomeData*)data)->speed; // re-cast from void pointer to your struct pointer
 	printf("Run entered with speed data: %d \n", spd);
 }
 void st_exit(){
@@ -57,7 +57,7 @@ int main(){
 	change_state(&sm, WALK, NULL);
 	
 	SomeData data = {16};
-	change_state(&sm, RUN, (void*)&data);
+	change_state(&sm, RUN, (void*)&data);	//pointer is cast into void type pointer
 	
 	return 0;
 }
