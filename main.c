@@ -1,25 +1,6 @@
 #include <stdio.h>
-#include <stdlib.h>
+#include "StateMachine.h"
 
-// State struct
-typedef struct{
-	void(*Enter)(void*);
-	void(*Exit)();
-	void(*Update)(float);
-	char *name;
-}State;
-
-//StateMachine struct
-typedef struct{
-	State *state;
-	State *stateList;
-}StateMachine;
-
-void change_state(StateMachine *sm, int stateIndex, void *data){
-	sm->state->Exit();
-	sm->state = &sm->stateList[stateIndex];
-	sm->state->Enter(data);
-}
 
 // example data passed to state enter
 typedef struct {
@@ -31,7 +12,7 @@ void st_idle_enter(void *data){
 	printf("Idle entered \n");
 }
 void st_run_enter(void *data){
-	int spd = ((SomeData*)data)->speed; // re-cast from void pointer to your struct pointer
+	int spd = ((SomeData*)data)->speed;
 	printf("Run entered with speed data: %d \n", spd);
 }
 void st_exit(){
@@ -57,7 +38,7 @@ int main(){
 	change_state(&sm, WALK, NULL);
 	
 	SomeData data = {16};
-	change_state(&sm, RUN, (void*)&data);	//pointer is cast into void type pointer
+	change_state(&sm, RUN, (void*)&data);
 	
 	return 0;
 }
